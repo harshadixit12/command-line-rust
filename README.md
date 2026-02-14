@@ -5,3 +5,6 @@ Following along https://www.oreilly.com/library/view/command-line-rust/978109810
 
 ## Contents
 1. Echo
+
+
+// Authored by human, no LLMs were used.
