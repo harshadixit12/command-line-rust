@@ -5,17 +5,18 @@ fn main() {
         .version("0.1.0")
         .author("Harsha <harshadixit12@gmail.com>")
         .about("A simple echo command")
-        .arg(Arg::with_name("text")
-            .value_name("TEXT")
-            .help("Input text")
-            .required(true)
-            .min_values(1),
+        .arg(
+            Arg::with_name("text")
+                .value_name("TEXT")
+                .help("Input text")
+                .required(true)
+                .min_values(1),
         )
         .arg(
             Arg::with_name("omit_newline")
                 .short("n")
                 .help("Omit printing newline")
-                .takes_value(false)
+                .takes_value(false),
         )
         .get_matches();
 
@@ -24,7 +25,7 @@ fn main() {
     let mut ending = "\n";
     if omit_newline {
         ending = "";
-    } 
+    }
 
     println!("{}{}", text.join(" "), ending);
 }

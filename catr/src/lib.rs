@@ -1,5 +1,5 @@
-use std::error::Error;
 use clap::{App, Arg};
+use std::error::Error;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
@@ -12,8 +12,7 @@ pub struct Config {
     number_nonblank_lines: bool,
 }
 
-pub fn run (config: Config) -> CatResult<()> {
-    
+pub fn run(config: Config) -> CatResult<()> {
     for filename in config.files {
         match open(&filename) {
             Err(e) => eprintln!("Failed to open {}: {}", filename, e),
@@ -28,7 +27,6 @@ pub fn run (config: Config) -> CatResult<()> {
                         } else {
                             println!("  {}", line);
                         }
-                        
                     } else if config.number_lines {
                         println!("{} {}", line_number, line);
                         line_number += 1;
@@ -37,8 +35,7 @@ pub fn run (config: Config) -> CatResult<()> {
                         continue;
                     }
                 }
-                
-            } 
+            }
         }
     }
     Ok(())
@@ -56,7 +53,7 @@ pub fn get_args() -> CatResult<Config> {
                 .required(true)
                 .multiple(true)
                 .default_value("-")
-                .min_values(1)
+                .min_values(1),
         )
         .arg(
             Arg::with_name("number_lines")
@@ -71,7 +68,7 @@ pub fn get_args() -> CatResult<Config> {
                 .short("b")
                 .long("number-nonblank")
                 .help("Number of non-blank lines")
-                .takes_value(false)
+                .takes_value(false),
         )
         .get_matches();
 

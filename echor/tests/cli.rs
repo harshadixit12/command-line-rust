@@ -1,6 +1,6 @@
-use std::fs;
 use assert_cmd::cargo;
 use predicates::prelude::*;
+use std::fs;
 
 type TestResult = Result<(), Box<dyn std::error::Error>>;
 
@@ -16,18 +16,14 @@ fn dies_no_args() -> TestResult {
 #[test]
 fn runs() -> TestResult {
     let mut cmd = cargo::cargo_bin_cmd!("echor");
-    cmd.arg("Hello, world!")
-        .assert()
-        .success();
+    cmd.arg("Hello, world!").assert().success();
 
     Ok(())
 }
 
 #[test]
 fn single_arg() -> TestResult {
-    let tests = vec![
-        ("Hello there", "tests/testdata/expected/hello1.txt"),
-    ];
+    let tests = vec![("Hello there", "tests/testdata/expected/hello1.txt")];
     let mut cmd = cargo::cargo_bin_cmd!("echor");
     for (input, expected_file) in tests {
         let expected = fs::read_to_string(expected_file)?;

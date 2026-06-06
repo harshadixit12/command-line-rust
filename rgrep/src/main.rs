@@ -1,4 +1,3 @@
-
 use regex::Regex;
 use std::env;
 use std::fs;
@@ -9,7 +8,7 @@ fn search(contents: &str, regex: &Regex, invert: bool) -> Vec<(usize, String)> {
     let mut line_number = 1;
     for line in contents.lines() {
         let is_match = regex.is_match(line);
-        let should_include = if invert {!is_match} else {is_match};
+        let should_include = if invert { !is_match } else { is_match };
 
         if should_include {
             results.push((line_number, line.to_string()));
@@ -22,21 +21,25 @@ fn search(contents: &str, regex: &Regex, invert: bool) -> Vec<(usize, String)> {
 }
 
 fn main() {
-   let args: Vec<String> = env::args().collect();
-   println!("{:?} {:?}", env::args(), env::args().collect::<Vec<String>>());
+    let args: Vec<String> = env::args().collect();
+    println!(
+        "{:?} {:?}",
+        env::args(),
+        env::args().collect::<Vec<String>>()
+    );
 
-   if args.len() < 3 {
+    if args.len() < 3 {
         println!("Usage: rgrep [OPTIONS] <pattern> <path>");
         eprintln!("Options: -v -c -l");
         std::process::exit(1);
-   }
+    }
 
-   let mut invert = false;
-   let mut count_only = false;
-   let mut files_only = false;
-   let mut pattern_index = 1;
+    let mut invert = false;
+    let mut count_only = false;
+    let mut files_only = false;
+    let mut pattern_index = 1;
 
-   for i in 1..args.len() {
+    for i in 1..args.len() {
         match args[i].as_str() {
             "-v" => invert = true,
             "-c" => count_only = true,
@@ -46,25 +49,25 @@ fn main() {
                 break;
             }
         }
-   }
+    }
 
-   if pattern_index +1 >= args.len() {
+    if pattern_index + 1 >= args.len() {
         eprintln!("Error: missing pattern or path.");
         std::process::exit(1);
-   }
-
-   let pattern = &args[pattern_index];
-   let path = &args[pattern_index+1];
-
-   let regex = match Regex::new(pattern) {
-    Ok(r) => r,
-    Err(e) => {
-        eprintln!("Error: invalid pattern: {}", e);
-        std::process::exit(1);
     }
-   };
 
-   for entry in WalkDir::new(path).into_iter() {
+    let pattern = &args[pattern_index];
+    let path = &args[pattern_index + 1];
+
+    let regex = match Regex::new(pattern) {
+        Ok(r) => r,
+        Err(e) => {
+            eprintln!("Error: invalid pattern: {}", e);
+            std::process::exit(1);
+        }
+    };
+
+    for entry in WalkDir::new(path).into_iter() {
         let entry = match entry {
             Ok(e) => e,
             Err(_) => continue,
@@ -100,5 +103,5 @@ fn main() {
             let line = &matches[i].1;
             println!("{}:{}: {}", file_path.display(), line_num, line);
         }
-   }
+    }
 }
